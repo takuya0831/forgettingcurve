@@ -29,8 +29,6 @@
 				background-position: center;
 				background-repeat: no-repeat;
 				background-size: contain;
-				background-color: rgba(255,255,255,0.5);
-				background-blend-mode: lighten;
 			}
 
 			header h1 {
@@ -72,6 +70,7 @@
 			}
 			
 			section {
+				font-size: 20px;
 				margin: 15px auto;
 				background-color:  rgb(255, 255, 255);
 				padding: 20px;
@@ -89,11 +88,12 @@
 			}
 
 			section h3 {
-				font-size: 22px;
-				color: rgb(255, 150, 0);
-				text-align: center;
+				font-size: 25px;
+				color: rgb(60, 60, 60);
+				text-align: left;
 				font-weight: bold;
-				text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
+				text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+				margin-top: 10px;
 				margin-bottom: 10px;
 			}
 
@@ -117,6 +117,7 @@
 			#basic p, #busy p, #full p {
 				border-bottom: 2px solid rgb(220, 220, 220);
 				padding: 15px 0;
+				text-align: center;
 			}
 
 			#basic p span:first-child, #busy p span:first-child, #full p span:first-child{
@@ -134,10 +135,17 @@
 				text-shadow: px 2px 5px rgba(0, 0, 0, 0.3);
 			}
 
-			#basic p, #busy p, #full p {
-				text-align: center;
+			#note p {
+				font-size: 22px;
 			}
 
+			#note img {
+				display: block;
+				max-width: 100%;
+				height: auto;
+				margin: 10px auto;
+				box-shadow: 2px 2px 10px rgba(0,0,0,0.3);
+			}
 		</style>
 	</head>
 	<body>
@@ -185,6 +193,42 @@
 				</section>
 				<section>
 
+				</section>
+				<section id="note">
+					<h3>忘却曲線</h3>
+					<p>
+						<img src="plot_02.jpg">
+						20分後・・・58%<br>
+						1時間後・・・44%<br>
+						1日後・・・34%<br>
+						1週間後・・・25%<br>
+						1カ月後・・・21%<br>
+						<br>
+					</p>
+					<h3>基本的な日程</h3>
+					<p>
+						1回目・・・明日<br>
+						2回目・・・3日後<br>
+						3回目・・・1週間後<br>
+						4回目・・・2週間後<br>
+						5回目・・・1カ月後<br>
+						<br>
+					</p>
+					<h3>しっかり復習</h3>
+					<p>
+						今日の1回目・・・20分後<br>
+						今日の2回目・・・1時間後<br>
+						+<br>
+						基本的な日程<br>
+						<br>
+					</p>
+					<h3>忙しいとき</h3>
+					<p>
+						1回目・・・明日<br>
+						2回目・・・1週間後<br>
+						3回目・・・1カ月後<br>
+						<br>
+					</p>
 				</section>
 			</main>
 			<script>
