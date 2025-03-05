@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="utf-8">
+    <title>AI学習アシスタント</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600&family=Noto+Sans+JP:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Orbitron', 'Noto Sans JP', sans-serif;
+        }
+
+        /* 未来的な背景 */
+        body {
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            background: radial-gradient(circle, #2E2EFF, #1B1B3A);
+            overflow: hidden;
+        }
+
+        /* メインコンテンツエリア */
+        .container {
+            width: 90%;
+            max-width: 800px;
+            padding: 40px;
+            border-radius: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+            text-align: center;
+            color: white;
+            position: relative;
+        }
+
+        h1 {
+            font-size: 32px;
+            font-weight: 600;
+            text-transform: uppercase;
+            text-shadow: 0px 0px 15px rgba(0, 255, 255, 0.7);
+            margin-bottom: 20px;
+        }
+
+        /* ネオン風ボタン */
+        .nav-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .nav-button {
+            padding: 12px 25px;
+            font-size: 18px;
+            border: 2px solid cyan;
+            border-radius: 50px;
+            background: transparent;
+            color: cyan;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            box-shadow: 0 0 10px cyan;
+        }
+
+        .nav-button:hover {
+            background: cyan;
+            color: #1B1B3A;
+            transform: scale(1.1);
+            box-shadow: 0 0 20px cyan;
+        }
+
+        /* スケジュール表示エリア */
+        .schedule {	
+            display: none;
+            padding: 20px;
+            border-radius: 15px;
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            animation: fadeIn 0.5s ease-in-out;
+        }
+
+        .schedule h2 {
+            font-size: 24px;
+            margin-bottom: 10px;
+            color: cyan;
+        }
+
+        .schedule p {
+            font-size: 18px;
+            margin: 5px 0;
+        }
+
+        /* フェードインアニメーション */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* フローティング背景エフェクト */
+        .glow {
+            position: absolute;
+            width: 300px;
+            height: 300px;
+            background: rgba(0, 255, 255, 0.3);
+            border-radius: 50%;
+            filter: blur(100px);
+            animation: moveGlow 5s infinite alternate ease-in-out;
+        }
+
+        @keyframes moveGlow {
+            from { transform: translate(-50px, -50px); }
+            to { transform: translate(50px, 50px); }
+        }
+
+        .glow1 { top: -50px; left: -50px; }
+        .glow2 { bottom: -50px; right: -50px; background: rgba(255, 0, 255, 0.3); }
+
+    </style>
+</head>
+<body>
+    <div class="glow glow1"></div>
+    <div class="glow glow2"></div>
+
+    <div class="container">
+        <h1>AI 学習アシスタント</h1>
+        <div class="nav-buttons">
+            <button class="nav-button" onclick="showSchedule('basic')">基本日程</button>
+            <button class="nav-button" onclick="showSchedule('full')">しっかり復習</button>
+            <button class="nav-button" onclick="showSchedule('busy')">忙しい時</button>
+        </div>
+        <div id="basic" class="schedule">
+            <h2>基本的な日程</h2>
+            <p>1回目: <span id="date1_basic"></span></p>
+            <p>2回目: <span id="date2_basic"></span></p>
+            <p>3回目: <span id="date3_basic"></span></p>
+            <p>4回目: <span id="date4_basic"></span></p>
+            <p>5回目: <span id="date5_basic"></span></p>
+        </div>
+        <div id="full" class="schedule">
+            <h2>しっかり復習</h2>
+            <p>今日の1回目: 20分後</p>
+            <p>今日の2回目: 1時間後</p>
+            <p>1回目: <span id="date1_full"></span></p>
+        </div>
+        <div id="busy" class="schedule">
+            <h2>忙しいとき</h2>
+            <p>1回目: <span id="date1_busy"></span></p>
+        </div>
+    </div>
+
+    <script>
+        function showSchedule(id) {
+            document.querySelectorAll('.schedule').forEach(el => el.style.display = 'none');
+            document.getElementById(id).style.display = 'block';
+        }
+
+        function formatDate(days) {
+            let date = new Date();
+            date.setDate(date.getDate() + days);
+            return `${date.getMonth() + 1}月${date.getDate()}日`;
+        }
+
+        document.getElementById("date1_basic").textContent = formatDate(1);
+        document.getElementById("date2_basic").textContent = formatDate(3);
+        document.getElementById("date3_basic").textContent = formatDate(7);
+        document.getElementById("date4_basic").textContent = formatDate(14);
+        document.getElementById("date5_basic").textContent = formatDate(30);
+    </script>
+</body>
+</html>
