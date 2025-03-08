@@ -2,14 +2,17 @@
 <html lang="ja">
 	<head>
 		<meta charset="utf-8">
-		<title>忘却曲線で復習タイミングを確認</title>
+		<title>忘却曲線で復習スケジュールを確認</title>
 		<meta name="description" content="忘却曲線を利用した復習日時の確認ページです">
 		<meta name="viewport" content="width=device-width">
+
 		<style>
 			* {
+				color: white;
+				font-size: 18px;
 				margin: 0px;
 				padding: 0px;
-				font-size: 16px;
+				box-sizing: border-box;
 			}
 
 			#wrap {
@@ -21,148 +24,119 @@
 				#wrap {
 					width: 100%;
 				}
+				h1 {
+					font-size: 20px;
+				}
 			}	
-			
-			/*タイトルの背景画像（画像サイズによってはスマホ表示に影響がでる）*/
-			header {
-				background-image: url("");
-				background-position: center;
-				background-repeat: no-repeat;
-				background-size: contain;
-			}
 
-			header h1 {
-				padding: 50px 0;
-				font-size: 35px;
+			body{
+				background: radial-gradient(circle,rgb(45, 45, 255),rgb(30,30,60));
 				text-align: center;
-				color: rgb(80, 80, 80);
-				text-shadow: 5px 5px 10px rgba(0, 0, 0, 0.3);
+				display: flex;
+				justify-content: center;
+				min-height: 100vh;
+				flex-direction: column;
 			}
 
-			nav ul {
-				display: flex;
-				list-style: none;
-				justify-content: center;
-				gap: 15px;
+			main {
+				width: 100%;
+				max-width: 800px;
+				padding: 30px;
+				border-radius: 15px;
+				background: rgba(255, 255, 255, 0.1);
+				text-align: center;
+				box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+				backdrop-filter: blur(8px);
+			}
+
+			h2 {
+				font-size: 32px;
+				font-weight: bold;
+				color: white;
+				text-shadow: 0px 0px 20px rgba(0, 255, 255, 0.8);
 				margin-bottom: 20px;
 			}
 
-			nav ul li {
-				flex: 1;
-				text-align: center;
-			}
-
-			nav ul li a {
-				display: block;
-				background-color: rgb(0, 125, 255);
-				color: rgb(255, 255, 255);
-				text-decoration: none;
+			button{
+				padding: 12px 30px; /*左右30pxは後で調整*/
 				font-size: 18px;
-				font-weight: bold;
-				padding: 12px 25px;
-				border-radius: 30px; /*ボタンの形状調整*/
-				box-shadow: 2px 2px 5px rgba(0,0,0,0.3);
-				transition: background-color 0.3s;
+				border: 2px solid rgb(0, 255, 255);
+				border-radius: 50px;
+				background: transparent;
+				color: rgb(0, 255, 255);
+				transition: all 0.3s; /*もう少しゆっくりでもいいかも*/
+				box-shadow: 0 0 10px rgb(0,255,255);
+				cursor: pointer;
+				margin: 5px;
 			}
 
-			nav ul li a:hover {
-				background-color: rgb(0,85,180);
-			}
-			
-			section {
-				font-size: 20px;
-				margin: 15px auto;
-				background-color:  rgb(255, 255, 255);
-				padding: 20px;
-				border-radius: 10px;
-				box-shadow: 2px 2px 5px rgba(255, 255, 255, 0.2);
+			button:hover{
+				background: rgb(0, 255, 255);
+				color: rgb(30,30,60);
+				transform: scale(1.1); /*1.2以上にするとちょっと不自然*/
+				box-shadow: 0 0 20px rgb(0, 255, 255);
 			}
 
-			section h2 {
+			h3 {
 				font-size: 22px;
-				color: rgb(255, 150, 0);
-				text-align: center;
-				font-weight: bold;
-				text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
 				margin-bottom: 10px;
+				color: rgb(0, 255, 255);
 			}
 
-			section h3 {
-				font-size: 25px;
-				color: rgb(60, 60, 60);
-				text-align: left;
-				font-weight: bold;
-				text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
-				margin-top: 10px;
-				margin-bottom: 10px;
-			}
-
-			footer {
-				border-top: none;
-				background-color: #555;
-				text-align: center;
-				color: white;
+			section {
+				display: none;
+				padding: 20px;
+				border-radius: 15px;
+				background: rgba(255,255,255,0.2);
+				box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+				margin-top: 20px;
 			}
 
 			#basic, #busy, #full{
-				margin-top: 50px;
-				margin-bottom: 50px;
-				background-color: rgb(255, 255, 255);
+				margin-top: 40px;
 				color: rgb(82, 82, 82);
 				padding: 15px 30px;
 				border-radius: 15px;
-				box-shadow: 5px 5px 10px rgba(0,0,0,0.5)
 			}
 
 			#basic p, #busy p, #full p {
-				border-bottom: 2px solid rgb(220, 220, 220);
+				border-bottom: 1px solid rgba(71, 70, 70, 0.5);
 				padding: 15px 0;
 				text-align: center;
 			}
 
 			#basic p span:first-child, #busy p span:first-child, #full p span:first-child{
-				font-weight: bold;
 				font-size: 20px;
 				margin-right: 80px;
-				color: rgb(0,125,255);
+				font-weight: bold;
+				color: rgb(255, 255, 255);
+				text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
 			}
 
 			#basic p span:last-child, #busy p span:last-child, #full p span:last-child{
 				font-size: 20px;
-				color: rgb(40, 170, 70);
 				text-align: center;
 				font-weight: bold;
+				color: rgb(255, 255, 255);
 				text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
 			}
 
-			#note p {
-				font-size: 20px;
-			}
-
-			#note img {
-				display: block;
-				max-width: 100%;
-				height: auto;
-				margin: 10px auto;
-			}
 		</style>
 	</head>
 	<body>
 		<div id="wrap">
-			<header>
-				<h1>忘却曲線で復習タイミングを確認</h1>
-			</header>
-			<nav>
-				<ul>
-						<li><a href="#basic">基本的な日程</a></li>
-						<li><a href="#full">しっかり復習</a></li>
-						<li><a href="#busy">忙しいとき</a></li>
-				</ul>
-			</nav>
 			<main>
-				<!-- 基本的な日程 -->
+				<h2>忘却曲線で復習スケジュール確認</h2>
+				<nav>
+					<ul>
+						<button id="btn-basic" onclick = "showBasic()">基本的な日程</button>
+						<button id="btn-full" onclick = "showFull()">しっかり復習</button>
+						<button id="btn-busy" onclick = "showBusy()">忙しいとき</button>
+					</ul>
+				</nav>
+
 				<section id="basic">
-					<h2>基本的な日程</h2> 
+					<h3>基本的な日程</h3> 
 					<p><span>1回目</span><span id="date1_basic"></span></p>
 					<p><span>2回目</span><span id="date2_basic"></span></p>
 					<p><span>3回目</span><span id="date3_basic"></span></p>
@@ -170,9 +144,8 @@
 					<p><span>5回目</span><span id="date5_basic"></span></p>
 				</section>
 
-				<!-- しっかり復習 -->
 				<section id="full">
-					<h2>しっかり復習</h2>
+					<h3>しっかり復習</h3>
 					<p><span>今日の1回目</span><span id="today1"></span></p>
 					<p><span>今日の2回目</span><span id="today2"></span></p>
 					<p style="text-align: center; font-weight: bold; font-size:24px; color: rgb(176, 176, 176);">+</p>
@@ -183,51 +156,33 @@
 					<p><span>5回目</span><span id="date5_full"></span></p>
 				</section>
 
-				<!-- 忙しいとき -->
 				<section id="busy">
-					<h2>忙しいとき</h2>
+					<h3>忙しいとき</h3>
 					<p><span>1回目</span><span id="date1_busy"></span></p>
 					<p><span>2回目</span><span id="date3_busy"></span></p>
 					<p><span>3回目</span><span id="date5_busy"></span></p>
 				</section>
-				<section id="note">
-					<h3>エビングハウスの忘却曲線</h3>
-					<p>
-						<img src="plot_02.jpg">
-						20分後・・・58%<br>
-						1時間後・・・44%<br>
-						1日後・・・34%<br>
-						1週間後・・・25%<br>
-						1カ月後・・・21%<br>
-						<br>
-					</p>
-					<h3>基本的な日程</h3>
-					<p>
-						1回目・・・1日後<br>
-						2回目・・・3日後<br>
-						3回目・・・1週間後<br>
-						4回目・・・2週間後<br>
-						5回目・・・1カ月後<br>
-						<br>
-					</p>
-					<h3>しっかり復習</h3>
-					<p>
-						今日の1回目・・・20分後<br>
-						今日の2回目・・・1時間後<br>
-						+<br>
-						基本的な日程<br>
-						<br>
-					</p>
-					<h3>忙しいとき</h3>
-					<p>
-						1回目・・・1日後<br>
-						2回目・・・1週間後<br>
-						3回目・・・1カ月後<br>
-						<br>
-					</p>
-				</section>
 			</main>
+
 			<script>
+				function showBasic(){
+					document.getElementById("basic").style.display = "block";
+					document.getElementById("full").style.display = "none";
+					document.getElementById("busy").style.display = "none";
+				}
+
+				function showFull(){
+					document.getElementById("basic").style.display = "none";
+					document.getElementById("full").style.display = "block";
+					document.getElementById("busy").style.display = "none";
+				}
+
+				function showBusy(){
+					document.getElementById("basic").style.display = "none";
+					document.getElementById("full").style.display = "none";
+					document.getElementById("busy").style.display = "block";
+				}
+
 				const date1_basic = document.getElementById("date1_basic");
 				const date2_basic = document.getElementById("date2_basic");
 				const date3_basic = document.getElementById("date3_basic");
@@ -241,64 +196,61 @@
 				const date5_full = document.getElementById("date5_full");
 
 				const date1_busy = document.getElementById("date1_busy");
-				const date2_busy = document.getElementById("date2_busy");
 				const date3_busy = document.getElementById("date3_busy");
-				const date4_busy = document.getElementById("date4_busy");
 				const date5_busy = document.getElementById("date5_busy");
 
 				const today1 = document.getElementById("today1");
 				const today2 = document.getElementById("today2");
 
-				// 現在の日付を取得
 				const now = new Date();
-				const first = new Date();
-				const second = new Date();
-				const third = new Date();
-				const fourth = new Date();
-				const fifth = new Date();
 
 				// 現在時刻 + 20分
-				const today1_time = new Date(now);
-				today1_time.setMinutes(now.getMinutes() + 20);
-				const hour1 = today1_time.getHours();
-				const min1 = today1_time.getMinutes();
-				today1.innerHTML = hour1 + "時" + (min1 < 10 ? "0" + min1 : min1) + "分";
+				const t_now1 = new Date(now);
+				t_now1.setMinutes(t_now1.getMinutes() + 20);
+				const h1 = t_now1.getHours();
+				const i1 = t_now1.getMinutes();
+				today1.innerHTML = h1 + "時" + (i1 < 10 ? "0" + i1 : i1) + "分";
 
-				// 現在時刻 + 60分（1時間）
-				const today2_time = new Date(now);
-				today2_time.setMinutes(now.getMinutes() + 60);
-				const hour2 = today2_time.getHours();
-				const min2 = today2_time.getMinutes();
-				today2.innerHTML = hour2 + "時" + (min2 < 10 ? "0" + min2 : min2) + "分";
+				// 現在時刻 + 120分
+				const t_now2 = new Date(now);
+				t_now2.setMinutes(t_now2.getMinutes() + 120);
+				const h2 = t_now2.getHours();
+				const i2 = t_now2.getMinutes();
+				today2.innerHTML = h2 + "時" + (i2 < 10 ? "0" + i2 : i2) + "分";
 
-				// 1回目
-				first.setDate(first.getDate() + 1);
-				let m1 = first.getMonth() + 1;
-				let d1 = first.getDate();
+				// 1回目 +1日
+				const now1 = new Date(now);
+				now1.setDate(now1.getDate() + 1);
+				let m1 = now1.getMonth() + 1;
+				let d1 = now1.getDate();
 				date1_basic.innerHTML =  date1_full.innerHTML = date1_busy.innerHTML = (m1 < 10 ? " " + m1 : m1) + "月" + (d1 < 10 ? " " + d1 : d1) + "日";
 		
-				// 2回目
-				second.setDate(second.getDate() + 3);
-				let m2 = second.getMonth() + 1;
-				let d2 = second.getDate();
+				// 2回目　+3日
+				const now2 = new Date(now);
+				now2.setDate(now2.getDate() + 3);
+				let m2 = now2.getMonth() + 1;
+				let d2 = now2.getDate();
 				date2_basic.innerHTML =  date2_full.innerHTML = (m2 < 10 ? " " + m2 : m2) + "月" + (d2 < 10 ? " " + d2 : d2) + "日";
 		
-				// 3回目
-				third.setDate(third.getDate() + 7);
-				let m3 = third.getMonth() + 1;
-				let d3 = third.getDate();
+				// 3回目　+7日
+				const now3 = new Date(now);
+				now3.setDate(now3.getDate() + 7);
+				let m3 = now3.getMonth() + 1;
+				let d3 = now3.getDate();
 				date3_basic.innerHTML =  date3_full.innerHTML = date3_busy.innerHTML = (m3 < 10 ? " " + m3 : m3) + "月" + (d3 < 10 ? " " + d3 : d3) + "日";
 		
-				// 4回目
-				fourth.setDate(fourth.getDate() + 14);
-				let m4 = fourth.getMonth() + 1;
-				let d4 = fourth.getDate();
+				// 4回目 +14日
+				const now4 = new Date(now);
+				now4.setDate(now4.getDate() + 14);
+				let m4 = now4.getMonth() + 1;
+				let d4 = now4.getDate();
 				date4_basic.innerHTML = date4_full.innerHTML = (m4 < 10 ? " " + m4 : m4) + "月" + (d4 < 10 ? " " + d4 : d4) + "日";
 		
-				// 5回目
-				fifth.setMonth(fifth.getMonth() + 1);
-				let m5 = fifth.getMonth() + 1;
-				let d5 = fifth.getDate();
+				// 5回目 +30日
+				const now5 = new Date(now);
+				now5.setDate(now5.getDate() + 30);
+				let m5 = now5.getMonth() + 1;
+				let d5 = now5.getDate();
 				date5_basic.innerHTML = date5_full.innerHTML = date5_busy.innerHTML = (m5 < 10 ? " " + m5 : m5) + "月" + (d5 < 10 ? " " + d5 : d5) + "日";
 			</script>
 		</div>
