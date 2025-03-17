@@ -2,7 +2,7 @@
 <html lang="ja">
 	<head>
 		<meta charset="utf-8">
-		<title>忘却曲線で復習タイミングを確認</title>
+		<title>忘却曲線で復習スケジュール確認</title>
 		<meta name="description" content="忘却曲線を利用した復習日時の確認ページです">
 		<meta name="viewport" content="width=device-width">
 		<style>
@@ -69,10 +69,14 @@
 				background-color: rgb(0,85,180);
 			}
 			
+			#note-button {
+				background-color: rgb(39, 227, 149);
+			}
+
 			section {
 				font-size: 20px;
 				margin: 15px auto;
-				background-color:  rgb(255, 255, 255);
+				background-color: rgb(255, 255, 255);
 				padding: 20px;
 				border-radius: 10px;
 				box-shadow: 2px 2px 5px rgba(255, 255, 255, 0.2);
@@ -95,6 +99,7 @@
 				text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
 				margin-top: 10px;
 				margin-bottom: 10px;
+				border-bottom: 2px solid rgb(35, 181, 154);
 			}
 
 			footer {
@@ -105,7 +110,7 @@
 			}
 
 			#basic, #busy, #full{
-				margin-top: 50px;
+				margin-top: 20px;
 				margin-bottom: 50px;
 				background-color: rgb(255, 255, 255);
 				color: rgb(82, 82, 82);
@@ -145,22 +150,32 @@
 				height: auto;
 				margin: 10px auto;
 			}
+
+			#back {
+				display: block;
+				text-align: right;
+				font-size: 22px;
+				color: blue;
+				margin-right: 20px;
+			}	
+
 		</style>
 	</head>
 	<body>
 		<div id="wrap">
 			<header>
-				<h1>忘却曲線で復習タイミングを確認</h1>
+				<h1>忘却曲線で復習スケジュール確認</h1>
 			</header>
 			<nav>
 				<ul>
 						<li><a href="#basic">基本的な日程</a></li>
 						<li><a href="#full">しっかり復習</a></li>
 						<li><a href="#busy">忙しいとき</a></li>
+						<li><a href="#note" id="note-button">忘却曲線とは</a></li>
 				</ul>
 			</nav>
+			<a href="index.html" id="back"> 戻る</a>
 			<main>
-				<!-- 基本的な日程 -->
 				<section id="basic">
 					<h2>基本的な日程</h2> 
 					<p><span>1回目</span><span id="date1_basic"></span></p>
@@ -170,7 +185,6 @@
 					<p><span>5回目</span><span id="date5_basic"></span></p>
 				</section>
 
-				<!-- しっかり復習 -->
 				<section id="full">
 					<h2>しっかり復習</h2>
 					<p><span>今日の1回目</span><span id="today1"></span></p>
@@ -183,7 +197,6 @@
 					<p><span>5回目</span><span id="date5_full"></span></p>
 				</section>
 
-				<!-- 忙しいとき -->
 				<section id="busy">
 					<h2>忙しいとき</h2>
 					<p><span>1回目</span><span id="date1_busy"></span></p>
@@ -191,9 +204,16 @@
 					<p><span>3回目</span><span id="date5_busy"></span></p>
 				</section>
 				<section id="note">
-					<h3>エビングハウスの忘却曲線</h3>
+					<h3>エビングハウスの忘却曲線と利用方法</h3>
 					<p>
-						<img src="plot_02.jpg">
+						人は学習した内容を時間とともに忘れていきます。しかし、適切なタイミングで復習をおこなうことで、記憶を長期保持することができます。
+						その際、利用されるのが忘却曲線です。忘却曲線における縦軸は節約率を表します。これは、一度学習した内容を、再び学習直後の状態に戻すために必要な時間が、
+						どれだけ短縮できるかを表しています。
+						例えば、20分後の節約率は 58% であり、最初に学習したときの 42% の時間で覚え直すことができます。<br>
+						記憶は最初の1日で急激に減少し、その後、緩やかに減少していきます。そのため、学習後1日以内の復習が重要になります。さらに、一定期間をあけて定期的に復習することで長期的に定着しやすくなります。<br>
+						
+						<img src="plot.jpg">
+					<h3>節約率</h3>
 						20分後・・・58%<br>
 						1時間後・・・44%<br>
 						1日後・・・34%<br>
@@ -213,7 +233,7 @@
 					<h3>しっかり復習</h3>
 					<p>
 						今日の1回目・・・20分後<br>
-						今日の2回目・・・1時間後<br>
+						今日の2回目・・・2時間後<br>
 						+<br>
 						基本的な日程<br>
 						<br>
@@ -260,16 +280,16 @@
 				// 現在時刻 + 20分
 				const today1_time = new Date(now);
 				today1_time.setMinutes(now.getMinutes() + 20);
-				const hour1 = today1_time.getHours();
-				const min1 = today1_time.getMinutes();
-				today1.innerHTML = hour1 + "時" + (min1 < 10 ? "0" + min1 : min1) + "分";
+				const h1 = today1_time.getHours();
+				const i1 = today1_time.getMinutes();
+				today1.innerHTML = h1 + "時" + (i1 < 10 ? "0" + i1 : i1) + "分";
 
-				// 現在時刻 + 60分（1時間）
+				// 現在時刻 + 120分
 				const today2_time = new Date(now);
-				today2_time.setMinutes(now.getMinutes() + 60);
-				const hour2 = today2_time.getHours();
-				const min2 = today2_time.getMinutes();
-				today2.innerHTML = hour2 + "時" + (min2 < 10 ? "0" + min2 : min2) + "分";
+				today2_time.setMinutes(now.getMinutes() + 120);
+				const h2 = today2_time.getHours();
+				const i2 = today2_time.getMinutes();
+				today2.innerHTML = h2 + "時" + (i2 < 10 ? "0" + i2 : i2) + "分";
 
 				// 1回目
 				first.setDate(first.getDate() + 1);
@@ -296,7 +316,7 @@
 				date4_basic.innerHTML = date4_full.innerHTML = (m4 < 10 ? " " + m4 : m4) + "月" + (d4 < 10 ? " " + d4 : d4) + "日";
 		
 				// 5回目
-				fifth.setMonth(fifth.getMonth() + 1);
+				fifth.setDate(fifth.getDate() + 30);
 				let m5 = fifth.getMonth() + 1;
 				let d5 = fifth.getDate();
 				date5_basic.innerHTML = date5_full.innerHTML = date5_busy.innerHTML = (m5 < 10 ? " " + m5 : m5) + "月" + (d5 < 10 ? " " + d5 : d5) + "日";
