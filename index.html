@@ -23,6 +23,10 @@
 			@media(max-width:800px) {
 				#wrap {
 					width: 100%;
+
+				h1 {
+					font-size: 20px;
+				}
 				}
 			}	
 
@@ -63,7 +67,7 @@
 				background: transparent;
 				color: rgb(0, 255, 255);
 				transition: all 0.3s; /*もう少しゆっくりでもいいかも*/
-				box-shadow: 0 0 10px rgb(0,255,255);
+				box-shadow: 0 0 10px rgb(0, 255, 255);
 				cursor: pointer;
 				margin: 5px;
 			}
@@ -73,6 +77,14 @@
 				color: rgb(30,30,60);
 				transform: scale(1.1); /*1.2以上にするとちょっと不自然*/
 				box-shadow: 0 0 20px rgb(0, 255, 255);
+			}
+
+			#btn-others {
+				display: flex;
+				justify-content: center;
+				gap: 10px;
+				margin-top: 10px;
+				width: 100%;
 			}
 
 			#btn-link {
@@ -88,7 +100,7 @@
 				box-shadow: 0 0 5px rgb(255, 255, 255);
 				cursor: pointer;
 				margin: 5px;
-				display: block;
+				display: none;
 			}
 
 			#btn-link:hover {
@@ -109,7 +121,7 @@
 				box-shadow: 0 0 5px rgb(255, 255, 255);
 				cursor: pointer;
 				margin: 5px;
-				display: block;
+				display: none;
 			}
 
 			#btn-bg:hover {
@@ -123,14 +135,6 @@
 				background-position: center;
 				background-repeat: no-repeat;
 				background-size: cover;
-			}
-
-			#btn-position {
-				display: flex;
-				justify-content: center;
-				gap: 10px;
-				margin-top: 10px;
-				width: 100%;
 			}
 
 			h2 {
@@ -187,9 +191,9 @@
 				<h1>忘却曲線で復習スケジュール確認</h1>
 				<nav>
 					<ul>
-						<button id="btn-basic" onclick = "showBasic()">基本的な日程</button>
-						<button id="btn-full" onclick = "showFull()">しっかり復習</button>
-						<button id="btn-busy" onclick = "showBusy()">忙しいとき</button>
+						<button id="btn-basic" onclick = "selectBasic()">基本的な日程</button>
+						<button id="btn-full" onclick = "selectFull()">しっかり復習</button>
+						<button id="btn-busy" onclick = "selectBusy()">忙しいとき</button>
 					</ul>
 				</nav>
 
@@ -221,13 +225,13 @@
 					<p><span>3回目</span><span id="date5_busy"></span></p>
 				</section>
 			</main>
-			<div id="btn-position">
+			<div id="btn-others">
 				<button id = "btn-link" onclick = "window.location.href='simple.html'">シンプル版・忘却曲線とは</button>
 				<button id = "btn-bg" onclick = "bgChange()">背景ON/OFF</button>
 			</div>
 
 			<script>
-				function showBasic(){
+				function selectBasic(){
 					document.getElementById("basic").style.display = "block";
 					document.getElementById("full").style.display = "none";
 					document.getElementById("busy").style.display = "none";
@@ -235,7 +239,7 @@
 					document.getElementById("btn-link").style.display = "block";
 				}
 
-				function showFull(){
+				function selectFull(){
 					document.getElementById("basic").style.display = "none";
 					document.getElementById("full").style.display = "block";
 					document.getElementById("busy").style.display = "none";
@@ -243,7 +247,7 @@
 					document.getElementById("btn-link").style.display = "block";
 				}
 
-				function showBusy(){
+				function selectBusy(){
 					document.getElementById("basic").style.display = "none";
 					document.getElementById("full").style.display = "none";
 					document.getElementById("busy").style.display = "block";
