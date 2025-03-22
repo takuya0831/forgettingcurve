@@ -1,334 +1,419 @@
-<!DOCTYPE html>
-<html lang="ja">
-	<head>
-		<meta charset="utf-8">
-		<title>忘却曲線で復習スケジュール確認</title>
-		<meta name="description" content="忘却曲線を利用した復習日時の確認用のページです">
-		<meta name="viewport" content="width=device-width">
+	<!DOCTYPE html>
+	<html lang="ja">
+		<head>
+			<meta charset="utf-8">
+			<title>忘却曲線で復習スケジュール確認</title>
+			<meta name="description" content="忘却曲線を利用した復習日時の確認用のページです">
+			<meta name="viewport" content="width=device-width">
 
-		<style>
-			* {
-				color: white;
-				font-size: 18px;
-				margin: 0px;
-				padding: 0px;
-				box-sizing: border-box;
-			}
+			<style>
+				* {
+					color: white;
+					font-size: 18px;
+					margin: 0px;
+					padding: 0px;
+					box-sizing: border-box;
+				}
 
-			#wrap {
-				width: 800px;
-				margin: 0px auto;
-			}
-
-			@media(max-width:800px) {
 				#wrap {
+					width: 800px;
+					margin: 0px auto;
+				}
+
+				@media(max-width:800px) {
+					#wrap {
+						width: 100%;
+					}
+					h1 {
+						font-size: 20px;
+					}
+				}	
+
+				p {
+					text-align: left;
+				}
+
+				body{
+					background: radial-gradient(circle,rgb(45, 45, 255),rgb(30,30,60));
+					text-align: center;
+					display: flex;
+					justify-content: center;
+					min-height: 100vh;
+					flex-direction: column;
+				}
+
+				main {
 					width: 100%;
+					max-width: 800px;
+					padding: 30px;
+					border-radius: 15px;
+					background: rgba(255, 255, 255, 0.1);
+					text-align: center;
+					box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+					backdrop-filter: blur(8px); 
+				}
 
 				h1 {
+					font-size: 32px;
+					font-weight: bold;
+					color: white;
+					text-shadow: 0px 0px 20px rgba(0, 255, 255, 0.8);
+					margin-bottom: 20px;
+				}
+
+				button{
+					width: 200px;
+					padding: 12px 30px; /*左右30pxは後で調整*/
+					font-size: 18px;
+					border: 2px solid rgb(0, 255, 255);
+					border-radius: 50px;
+					background: transparent;
+					color: rgb(0, 255, 255);
+					transition: all 0.3s; /*もう少しゆっくりでもいいかも*/
+					box-shadow: 0 0 10px rgb(0, 255, 255);
+					cursor: pointer;
+					margin: 5px;
+				}
+
+				button:hover{
+					background: rgb(0, 255, 255);
+					color: rgb(30,30,60);
+					transform: scale(1.1); /*1.2以上にするとちょっと不自然*/
+					box-shadow: 0 0 20px rgb(0, 255, 255);
+				}
+
+				#btn-others {
+					display: flex;
+					justify-content: center;
+					gap: 10px;
+					margin-top: 10px;
+					width: 100%;
+				}
+
+				#btn-explanation {
+					width: auto;
+					height: 24px;
+					padding: 2px 10px; 
+					font-size: 15px;
+					border: none;
+					border-radius: 10px;
+					background: rgba(255, 255, 255, 0.2);
+					color: rgb(255, 255, 255);
+					transition: all 0.3s;
+					box-shadow: 0 0 5px rgb(255, 255, 255);
+					cursor: pointer;
+					margin: 5px;
+					display: none;
+				}
+
+				#btn-explanation:hover {
+					background: rgba(255, 255, 255, 0.1);
+					color: rgb(255, 255, 255);
+				}
+
+				#btn-bg {
+					width: auto;
+					height: 24px;
+					padding: 2px 10px; 
+					font-size: 15px;
+					border: none;
+					border-radius: 10px;
+					background: rgba(255, 255, 255, 0.2);
+					color: rgb(255, 255, 255);
+					transition: all 0.3s;
+					box-shadow: 0 0 5px rgb(255, 255, 255);
+					cursor: pointer;
+					margin: 5px;
+					display: none;
+				}
+
+				#btn-bg:hover {
+					background: rgba(255, 255, 255, 0.1);
+					color: rgb(255, 255, 255);
+				}
+
+				/*classなので.を使うので注意。#では表示されなかった*/
+				.bg-change {
+					background-image: url("yozora.jpg");
+					background-position: center;
+					background-repeat: no-repeat;
+					background-size: cover;
+				}
+
+				h2 {
+					font-size: 22px;
+					margin-bottom: 10px;
+					color: rgb(0, 255, 255);
+				}
+
+				h3 {
+					font-size: 25px;
+					color: rgb(255, 255, 255);
+					text-align: left;
+					font-weight: bold;
+					text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+					margin-top: 10px;
+					margin-bottom: 10px;
+					border-bottom: 2px solid rgb(255, 255, 255);
+				}
+
+				#note {
 					font-size: 20px;
+					text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
 				}
+
+				img {
+					max-width: 90%;
+					height: auto;
+					border-radius: 10px;
+					box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.3);
+					margin-top: 20px;
+					margin-bottom: 20px;
 				}
-			}	
 
-			body{
-				background: radial-gradient(circle,rgb(45, 45, 255),rgb(30,30,60));
-				text-align: center;
-				display: flex;
-				justify-content: center;
-				min-height: 100vh;
-				flex-direction: column;
-			}
+				section {
+					display: none;
+					padding: 20px;
+					border-radius: 15px;
+					background: rgba(255,255,255,0.2);
+					box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+					margin-top: 20px;
+				}
 
-			main {
-				width: 100%;
-				max-width: 800px;
-				padding: 30px;
-				border-radius: 15px;
-				background: rgba(255, 255, 255, 0.1);
-				text-align: center;
-				box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-				backdrop-filter: blur(8px); 
-			}
+				#basic, #busy, #full{
+					margin-top: 40px;
+					color: rgb(82, 82, 82);
+					padding: 15px 30px;
+					border-radius: 15px;
+				}
 
-			h1 {
-				font-size: 32px;
-				font-weight: bold;
-				color: white;
-				text-shadow: 0px 0px 20px rgba(0, 255, 255, 0.8);
-				margin-bottom: 20px;
-			}
+				#basic p, #busy p, #full p {
+					border-bottom: 1px solid rgba(70, 70, 70, 0.5);
+					padding: 15px 0;
+					text-align: center;
+				}
 
-			button{
-				width: 200px;
-				padding: 12px 30px; /*左右30pxは後で調整*/
-				font-size: 18px;
-				border: 2px solid rgb(0, 255, 255);
-				border-radius: 50px;
-				background: transparent;
-				color: rgb(0, 255, 255);
-				transition: all 0.3s; /*もう少しゆっくりでもいいかも*/
-				box-shadow: 0 0 10px rgb(0, 255, 255);
-				cursor: pointer;
-				margin: 5px;
-			}
+				#basic p span:first-child, #busy p span:first-child, #full p span:first-child{
+					font-size: 20px;
+					margin-right: 10px;
+					text-align: center;
+					font-weight: bold;
+					color: rgb(255, 255, 255);
+					text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+				}
 
-			button:hover{
-				background: rgb(0, 255, 255);
-				color: rgb(30,30,60);
-				transform: scale(1.1); /*1.2以上にするとちょっと不自然*/
-				box-shadow: 0 0 20px rgb(0, 255, 255);
-			}
+				#basic p span:last-child, #busy p span:last-child, #full p span:last-child{
+					font-size: 20px;
+					margin-left: 10px;
+					text-align: center;
+					font-weight: bold;
+					color: rgb(255, 255, 255);
+					text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+				}
 
-			#btn-others {
-				display: flex;
-				justify-content: center;
-				gap: 10px;
-				margin-top: 10px;
-				width: 100%;
-			}
+			</style>
+		</head>
+		<body>
+			<div id="wrap">
+				<main>
+					<h1>忘却曲線で復習スケジュール確認</h1>
+					<nav>
+						<ul>
+							<button id="btn-basic" onclick = "selectBasic()">基本的な日程</button>
+							<button id="btn-full" onclick = "selectFull()">しっかり復習</button>
+							<button id="btn-busy" onclick = "selectBusy()">忙しいとき</button>
+						</ul>
+					</nav>
 
-			#btn-link {
-				width: auto;
-				height: 24px;
-				padding: 2px 10px; 
-				font-size: 15px;
-				border: none;
-				border-radius: 10px;
-				background: rgba(255, 255, 255, 0.2);
-				color: rgb(255, 255, 255);
-				transition: all 0.3s;
-				box-shadow: 0 0 5px rgb(255, 255, 255);
-				cursor: pointer;
-				margin: 5px;
-				display: none;
-			}
+					<section id="basic">
+						<h2>基本的な日程</h2>
+						<p><span>1回目</span><span id="date1_basic"></span></p>
+						<p><span>2回目</span><span id="date2_basic"></span></p>
+						<p><span>3回目</span><span id="date3_basic"></span></p>
+						<p><span>4回目</span><span id="date4_basic"></span></p>
+						<p><span>5回目</span><span id="date5_basic"></span></p>
+					</section>
 
-			#btn-link:hover {
-				background: rgba(255, 255, 255, 0.1);
-				color: rgb(255, 255, 255);
-			}
+					<section id="full">
+						<h2>しっかり復習</h2>
+						<p><span>今日の1回目</span><span id="today1"></span></p>
+						<p><span>今日の2回目</span><span id="today2"></span></p>
+						<p style="text-align: center; font-weight: bold; font-size:24px; color: rgb(176, 176, 176);">+</p>
+						<p><span>1回目</span><span id="date1_full"></span></p>
+						<p><span>2回目</span><span id="date2_full"></span></p>
+						<p><span>3回目</span><span id="date3_full"></span></p>
+						<p><span>4回目</span><span id="date4_full"></span></p>
+						<p><span>5回目</span><span id="date5_full"></span></p>
+					</section>
 
-			#btn-bg {
-				width: auto;
-				height: 24px;
-				padding: 2px 10px; 
-				font-size: 15px;
-				border: none;
-				border-radius: 10px;
-				background: rgba(255, 255, 255, 0.2);
-				color: rgb(255, 255, 255);
-				transition: all 0.3s;
-				box-shadow: 0 0 5px rgb(255, 255, 255);
-				cursor: pointer;
-				margin: 5px;
-				display: none;
-			}
+					<section id="busy">
+						<h2>忙しいとき</h2>
+						<p><span>1回目</span><span id="date1_busy"></span></p>
+						<p><span>2回目</span><span id="date3_busy"></span></p>
+						<p><span>3回目</span><span id="date5_busy"></span></p>
+					</section>
 
-			#btn-bg:hover {
-				background: rgba(255, 255, 255, 0.1);
-				color: rgb(255, 255, 255);
-			}
+					<section id="explanation">
+						<h3>エビングハウスの忘却曲線と利用方法</h3>
+						<p id="note">
+							人は学習した内容を時間とともに忘れていきます。しかし、適切なタイミングで復習をおこなうことで、記憶を長期保持することができます。
+							その際、利用されるのが忘却曲線です。忘却曲線における縦軸は節約率を表します。これは、一度学習した内容を、再び学習直後の状態に戻すために必要な時間が、
+							どれだけ短縮できるかを表しています。
+							例えば、20分後の節約率は 58% であり、最初に学習したときの 42% の時間で覚え直すことができます。<br>
+							記憶は最初の1日で急激に減少し、その後、緩やかに減少していきます。そのため、学習後1日以内の復習が重要になります。さらに、一定期間をあけて定期的に復習することで、記憶は長期的に定着しやすくなります。<br>
+						</p>
+						<img src="plot.jpg">
+						<h3>節約率</h3>
+						<p id="note">
+							20分後・・・58%<br>
+							1時間後・・・44%<br>
+							1日後・・・34%<br>
+							1週間後・・・25%<br>
+							1カ月後・・・21%<br>
+							<br>
+						</p>
+						<h3>基本的な日程</h3>
+						<p id="note">
+							1回目・・・1日後<br>
+							2回目・・・3日後<br>
+							3回目・・・1週間後<br>
+							4回目・・・2週間後<br>
+							5回目・・・1カ月後<br>
+							<br>
+						</p>
+						<h3>しっかり復習</h3>
+						<p id="note">
+							今日の1回目・・・20分後<br>
+							今日の2回目・・・2時間後<br>
+							+<br>
+							基本的な日程<br>
+							<br>
+						</p>
+						<h3>忙しいとき</h3>
+						<p id="note">
+							1回目・・・1日後<br>
+							2回目・・・1週間後<br>
+							3回目・・・1カ月後<br>
+							<br>
+						</p>
+					</section>
+				</main>
+				<div id="btn-others">
+					<button id="btn-explanation" onclick = "selectExplanation()">忘却曲線とは</button>
+					<button id = "btn-bg" onclick = "bgChange()">背景ON/OFF</button>
+				</div>
 
-			/*classなので.を使うので注意。#では表示されなかった*/
-			.bg-change {
-				background-image: url("yozora.jpg");
-				background-position: center;
-				background-repeat: no-repeat;
-				background-size: cover;
-			}
+				<script>
+					function selectBasic(){
+						document.getElementById("basic").style.display = "block";
+						document.getElementById("full").style.display = "none";
+						document.getElementById("busy").style.display = "none";
+						document.getElementById("explanation").style.display = "none";
+						document.getElementById("btn-bg").style.display = "block";
+						document.getElementById("btn-explanation").style.display = "block";
+					}
 
-			h2 {
-				font-size: 22px;
-				margin-bottom: 10px;
-				color: rgb(0, 255, 255);
-			}
+					function selectFull(){
+						document.getElementById("basic").style.display = "none";
+						document.getElementById("full").style.display = "block";
+						document.getElementById("busy").style.display = "none";
+						document.getElementById("explanation").style.display = "none";
+						document.getElementById("btn-bg").style.display = "block";
+						document.getElementById("btn-explanation").style.display = "block";
+					}
 
-			section {
-				display: none;
-				padding: 20px;
-				border-radius: 15px;
-				background: rgba(255,255,255,0.2);
-				box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-				margin-top: 20px;
-			}
+					function selectBusy(){
+						document.getElementById("basic").style.display = "none";
+						document.getElementById("full").style.display = "none";
+						document.getElementById("busy").style.display = "block";
+						document.getElementById("explanation").style.display = "none";
+						document.getElementById("btn-bg").style.display = "block";
+						document.getElementById("btn-explanation").style.display = "block";
+					}
 
-			#basic, #busy, #full{
-				margin-top: 40px;
-				color: rgb(82, 82, 82);
-				padding: 15px 30px;
-				border-radius: 15px;
-			}
+					function selectExplanation(){
+						document.getElementById("basic").style.display = "none";
+						document.getElementById("full").style.display = "none";
+						document.getElementById("busy").style.display = "none";
+						document.getElementById("explanation").style.display = "block";
+						document.getElementById("btn-bg").style.display = "block";
+						document.getElementById("btn-explanation").style.display = "block";
+					}
 
-			#basic p, #busy p, #full p {
-				border-bottom: 1px solid rgba(71, 70, 70, 0.5);
-				padding: 15px 0;
-				text-align: center;
-			}
+					const date1_basic = document.getElementById("date1_basic");
+					const date2_basic = document.getElementById("date2_basic");
+					const date3_basic = document.getElementById("date3_basic");
+					const date4_basic = document.getElementById("date4_basic");
+					const date5_basic = document.getElementById("date5_basic");
 
-			#basic p span:first-child, #busy p span:first-child, #full p span:first-child{
-				font-size: 20px;
-				margin-right: 10px;
-				text-align: center;
-				font-weight: bold;
-				color: rgb(255, 255, 255);
-				text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
-			}
+					const date1_full = document.getElementById("date1_full");
+					const date2_full = document.getElementById("date2_full");
+					const date3_full = document.getElementById("date3_full");
+					const date4_full = document.getElementById("date4_full");
+					const date5_full = document.getElementById("date5_full");
 
-			#basic p span:last-child, #busy p span:last-child, #full p span:last-child{
-				font-size: 20px;
-				margin-left: 10px;
-				text-align: center;
-				font-weight: bold;
-				color: rgb(255, 255, 255);
-				text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
-			}
+					const date1_busy = document.getElementById("date1_busy");
+					const date3_busy = document.getElementById("date3_busy");
+					const date5_busy = document.getElementById("date5_busy");
 
-		</style>
-	</head>
-	<body>
-		<div id="wrap">
-			<main>
-				<h1>忘却曲線で復習スケジュール確認</h1>
-				<nav>
-					<ul>
-						<button id="btn-basic" onclick = "selectBasic()">基本的な日程</button>
-						<button id="btn-full" onclick = "selectFull()">しっかり復習</button>
-						<button id="btn-busy" onclick = "selectBusy()">忙しいとき</button>
-					</ul>
-				</nav>
+					const today1 = document.getElementById("today1");
+					const today2 = document.getElementById("today2");
 
-				<section id="basic">
-					<h2>基本的な日程</h2> 
-					<p><span>1回目</span><span id="date1_basic"></span></p>
-					<p><span>2回目</span><span id="date2_basic"></span></p>
-					<p><span>3回目</span><span id="date3_basic"></span></p>
-					<p><span>4回目</span><span id="date4_basic"></span></p>
-					<p><span>5回目</span><span id="date5_basic"></span></p>
-				</section>
+					const now = new Date();
 
-				<section id="full">
-					<h2>しっかり復習</h2>
-					<p><span>今日の1回目</span><span id="today1"></span></p>
-					<p><span>今日の2回目</span><span id="today2"></span></p>
-					<p style="text-align: center; font-weight: bold; font-size:24px; color: rgb(176, 176, 176);">+</p>
-					<p><span>1回目</span><span id="date1_full"></span></p>
-					<p><span>2回目</span><span id="date2_full"></span></p>
-					<p><span>3回目</span><span id="date3_full"></span></p>
-					<p><span>4回目</span><span id="date4_full"></span></p>
-					<p><span>5回目</span><span id="date5_full"></span></p>
-				</section>
+					// 現在時刻 + 20分
+					const t_now1 = new Date(now);
+					t_now1.setMinutes(t_now1.getMinutes() + 20);
+					const h1 = t_now1.getHours();
+					const i1 = t_now1.getMinutes();
+					today1.innerHTML = h1 + "時" + (i1 < 10 ? "0" + i1 : i1) + "分";
 
-				<section id="busy">
-					<h2>忙しいとき</h2>
-					<p><span>1回目</span><span id="date1_busy"></span></p>
-					<p><span>2回目</span><span id="date3_busy"></span></p>
-					<p><span>3回目</span><span id="date5_busy"></span></p>
-				</section>
-			</main>
-			<div id="btn-others">
-				<button id = "btn-link" onclick = "window.location.href='simple.html'">シンプル版・忘却曲線とは</button>
-				<button id = "btn-bg" onclick = "bgChange()">背景ON/OFF</button>
+					// 現在時刻 + 120分
+					const t_now2 = new Date(now);
+					t_now2.setMinutes(t_now2.getMinutes() + 120);
+					const h2 = t_now2.getHours();
+					const i2 = t_now2.getMinutes();
+					today2.innerHTML = h2 + "時" + (i2 < 10 ? "0" + i2 : i2) + "分";
+
+					// 1回目 +1日
+					const now1 = new Date(now);
+					now1.setDate(now1.getDate() + 1);
+					let m1 = now1.getMonth() + 1;
+					let d1 = now1.getDate();
+					date1_basic.innerHTML =  date1_full.innerHTML = date1_busy.innerHTML = (m1 < 10 ? " " + m1 : m1) + "月" + (d1 < 10 ? " " + d1 : d1) + "日";
+			
+					// 2回目　+3日
+					const now2 = new Date(now);
+					now2.setDate(now2.getDate() + 3);
+					let m2 = now2.getMonth() + 1;
+					let d2 = now2.getDate();
+					date2_basic.innerHTML =  date2_full.innerHTML = (m2 < 10 ? " " + m2 : m2) + "月" + (d2 < 10 ? " " + d2 : d2) + "日";
+			
+					// 3回目　+7日
+					const now3 = new Date(now);
+					now3.setDate(now3.getDate() + 7);
+					let m3 = now3.getMonth() + 1;
+					let d3 = now3.getDate();
+					date3_basic.innerHTML =  date3_full.innerHTML = date3_busy.innerHTML = (m3 < 10 ? " " + m3 : m3) + "月" + (d3 < 10 ? " " + d3 : d3) + "日";
+			
+					// 4回目 +14日
+					const now4 = new Date(now);
+					now4.setDate(now4.getDate() + 14);
+					let m4 = now4.getMonth() + 1;
+					let d4 = now4.getDate();
+					date4_basic.innerHTML = date4_full.innerHTML = (m4 < 10 ? " " + m4 : m4) + "月" + (d4 < 10 ? " " + d4 : d4) + "日";
+			
+					// 5回目 +30日
+					const now5 = new Date(now);
+					now5.setDate(now5.getDate() + 30);
+					let m5 = now5.getMonth() + 1;
+					let d5 = now5.getDate();
+					date5_basic.innerHTML = date5_full.innerHTML = date5_busy.innerHTML = (m5 < 10 ? " " + m5 : m5) + "月" + (d5 < 10 ? " " + d5 : d5) + "日";
+
+					function bgChange(){
+						document.body.classList.toggle("bg-change"); // ""内はchass名。画像名では動かなかった。
+					}
+				</script>
 			</div>
-
-			<script>
-				function selectBasic(){
-					document.getElementById("basic").style.display = "block";
-					document.getElementById("full").style.display = "none";
-					document.getElementById("busy").style.display = "none";
-					document.getElementById("btn-bg").style.display = "block";
-					document.getElementById("btn-link").style.display = "block";
-				}
-
-				function selectFull(){
-					document.getElementById("basic").style.display = "none";
-					document.getElementById("full").style.display = "block";
-					document.getElementById("busy").style.display = "none";
-					document.getElementById("btn-bg").style.display = "block";
-					document.getElementById("btn-link").style.display = "block";
-				}
-
-				function selectBusy(){
-					document.getElementById("basic").style.display = "none";
-					document.getElementById("full").style.display = "none";
-					document.getElementById("busy").style.display = "block";
-					document.getElementById("btn-bg").style.display = "block";
-					document.getElementById("btn-link").style.display = "block";
-				}
-
-				const date1_basic = document.getElementById("date1_basic");
-				const date2_basic = document.getElementById("date2_basic");
-				const date3_basic = document.getElementById("date3_basic");
-				const date4_basic = document.getElementById("date4_basic");
-				const date5_basic = document.getElementById("date5_basic");
-
-				const date1_full = document.getElementById("date1_full");
-				const date2_full = document.getElementById("date2_full");
-				const date3_full = document.getElementById("date3_full");
-				const date4_full = document.getElementById("date4_full");
-				const date5_full = document.getElementById("date5_full");
-
-				const date1_busy = document.getElementById("date1_busy");
-				const date3_busy = document.getElementById("date3_busy");
-				const date5_busy = document.getElementById("date5_busy");
-
-				const today1 = document.getElementById("today1");
-				const today2 = document.getElementById("today2");
-
-				const now = new Date();
-
-				// 現在時刻 + 20分
-				const t_now1 = new Date(now);
-				t_now1.setMinutes(t_now1.getMinutes() + 20);
-				const h1 = t_now1.getHours();
-				const i1 = t_now1.getMinutes();
-				today1.innerHTML = h1 + "時" + (i1 < 10 ? "0" + i1 : i1) + "分";
-
-				// 現在時刻 + 120分
-				const t_now2 = new Date(now);
-				t_now2.setMinutes(t_now2.getMinutes() + 120);
-				const h2 = t_now2.getHours();
-				const i2 = t_now2.getMinutes();
-				today2.innerHTML = h2 + "時" + (i2 < 10 ? "0" + i2 : i2) + "分";
-
-				// 1回目 +1日
-				const now1 = new Date(now);
-				now1.setDate(now1.getDate() + 1);
-				let m1 = now1.getMonth() + 1;
-				let d1 = now1.getDate();
-				date1_basic.innerHTML =  date1_full.innerHTML = date1_busy.innerHTML = (m1 < 10 ? " " + m1 : m1) + "月" + (d1 < 10 ? " " + d1 : d1) + "日";
-		
-				// 2回目　+3日
-				const now2 = new Date(now);
-				now2.setDate(now2.getDate() + 3);
-				let m2 = now2.getMonth() + 1;
-				let d2 = now2.getDate();
-				date2_basic.innerHTML =  date2_full.innerHTML = (m2 < 10 ? " " + m2 : m2) + "月" + (d2 < 10 ? " " + d2 : d2) + "日";
-		
-				// 3回目　+7日
-				const now3 = new Date(now);
-				now3.setDate(now3.getDate() + 7);
-				let m3 = now3.getMonth() + 1;
-				let d3 = now3.getDate();
-				date3_basic.innerHTML =  date3_full.innerHTML = date3_busy.innerHTML = (m3 < 10 ? " " + m3 : m3) + "月" + (d3 < 10 ? " " + d3 : d3) + "日";
-		
-				// 4回目 +14日
-				const now4 = new Date(now);
-				now4.setDate(now4.getDate() + 14);
-				let m4 = now4.getMonth() + 1;
-				let d4 = now4.getDate();
-				date4_basic.innerHTML = date4_full.innerHTML = (m4 < 10 ? " " + m4 : m4) + "月" + (d4 < 10 ? " " + d4 : d4) + "日";
-		
-				// 5回目 +30日
-				const now5 = new Date(now);
-				now5.setDate(now5.getDate() + 30);
-				let m5 = now5.getMonth() + 1;
-				let d5 = now5.getDate();
-				date5_basic.innerHTML = date5_full.innerHTML = date5_busy.innerHTML = (m5 < 10 ? " " + m5 : m5) + "月" + (d5 < 10 ? " " + d5 : d5) + "日";
-
-				function bgChange(){
-					document.body.classList.toggle("bg-change"); // ""内はchass名。画像名では動かなかった。
-				}
-			</script>
-		</div>
-	</body>
-</html>
+		</body>
+	</html>
