@@ -158,7 +158,7 @@
 					border-bottom: 2px solid rgb(255, 255, 255);
 				}
 
-				#note {
+				.note {
 					font-size: 20px;
 					text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
 				}
@@ -219,9 +219,9 @@
 					<h1>忘却曲線で復習スケジュール確認</h1>
 					<nav>
 						<ul>
-							<button id="btn-basic" onclick = "selectBasic()">基本的な日程</button>
-							<button id="btn-full" onclick = "selectFull()">しっかり復習</button>
-							<button id="btn-busy" onclick = "selectBusy()">忙しいとき</button>
+							<li><button id="btn-basic" onclick = "selectBasic()">基本的な日程</button></li>
+							<li><button id="btn-full" onclick = "selectFull()">しっかり復習</button></li>
+							<li><button id="btn-busy" onclick = "selectBusy()">忙しいとき</button></li>
 						</ul>
 					</nav>
 
@@ -255,16 +255,16 @@
 
 					<section id="explanation">
 						<h3>エビングハウスの忘却曲線と利用方法</h3>
-						<p id="note">
+						<p class="note">
 							人は学習した内容を時間とともに忘れていきます。しかし、適切なタイミングで復習をおこなうことで、記憶を長期保持することができます。
 							その際、利用されるのが忘却曲線です。忘却曲線における縦軸は節約率を表します。これは、一度学習した内容を、再び学習直後の状態に戻すために必要な時間が、
 							どれだけ短縮できるかを表しています。
 							例えば、20分後の節約率は 58% であり、最初に学習したときの 42% の時間で覚え直すことができます。<br>
 							記憶は最初の1日で急激に減少し、その後、緩やかに減少していきます。そのため、学習後1日以内の復習が重要になります。さらに、一定期間をあけて定期的に復習することで、記憶は長期的に定着しやすくなります。<br>
 						</p>
-						<img src="plot.jpg">
+						<img src="plot.jpg" alt="忘却曲線グラフ">
 						<h3>節約率</h3>
-						<p id="note">
+						<p class="note">
 							20分後・・・58%<br>
 							1時間後・・・44%<br>
 							1日後・・・34%<br>
@@ -273,7 +273,7 @@
 							<br>
 						</p>
 						<h3>基本的な日程</h3>
-						<p id="note">
+						<p class="note">
 							1回目・・・1日後<br>
 							2回目・・・3日後<br>
 							3回目・・・1週間後<br>
@@ -282,7 +282,7 @@
 							<br>
 						</p>
 						<h3>しっかり復習</h3>
-						<p id="note">
+						<p class="note">
 							今日の1回目・・・20分後<br>
 							今日の2回目・・・2時間後<br>
 							+<br>
@@ -290,7 +290,7 @@
 							<br>
 						</p>
 						<h3>忙しいとき</h3>
-						<p id="note">
+						<p class="note">
 							1回目・・・1日後<br>
 							2回目・・・1週間後<br>
 							3回目・・・1カ月後<br>
@@ -299,8 +299,8 @@
 					</section>
 				</main>
 				<div id="btn-others">
-					<button id="btn-explanation" onclick = "selectExplanation()">忘却曲線とは</button>
-					<button id = "btn-bg" onclick = "bgChange()">背景ON/OFF</button>
+					<button id="btn-explanation" onclick="selectExplanation()">忘却曲線とは</button>
+					<button id = "btn-bg" onclick="bgChange()">背景ON/OFF</button>
 				</div>
 
 				<script>
